@@ -1,6 +1,7 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
+import { map } from '@umijs/utils/compiled/zod';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
@@ -48,17 +49,43 @@ export async function rule(
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
+    keyword?: string;
+    data?:string;
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/rule', {
-    method: 'GET',
-    params: {
-      ...params,
+  return request<API.RuleList>('/api/deingManageSystem/queryProcessingDetails', {
+    method: 'POST',
+    // params: {
+    //   ...params,
+    // },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data:{
+      'dmscommon': {
+        'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
+        "zoneno": "200",
+        "service": "UserManage",
+        "method": "userLogin",
+        "logtype": "USERREGISTER",
+        "department": "开发",
+        "workdate": "2023-05-14",
+        "worktime": "20:21:11"
+      },
+      "private": {
+        "begindate": "1990-05-12",
+        "enddate": "2023-05-12",
+        "type": "线",
+        "material": "羊绒",
+        "createdate": "2023-05-12",
+        "customer": "乔丹"
+      }
     },
     ...(options || {}),
   });
 }
+
 
 /** 新建规则 PUT /api/rule */
 export async function updateRule(options?: { [key: string]: any }) {

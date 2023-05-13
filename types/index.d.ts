@@ -2,7 +2,7 @@ export namespace API {
   /** GET /api/currentUser */
   export type GET_API_CURRENT_USER_QUERY = {
     /** example:  123 */
-    token: string;
+    // token: string;
   };
 
   export type GET_API_CURRENT_USER_PAYLOAD = Record<string, any>;
@@ -42,7 +42,7 @@ export namespace API {
   /** GET /api/rule */
   export type GET_API_RULE_QUERY = {
     /** example:  123 */
-    token: string;
+    // token: string;
     /** example: 1 */
     current: string;
     /** example: 20 */
@@ -83,7 +83,7 @@ export namespace API {
   /** POST /api/login/outLogin */
   export type POST_API_LOGIN_OUT_LOGIN_QUERY = {
     /** example:  123 */
-    token: string;
+    // token: string;
   };
 
   export type POST_API_LOGIN_OUT_LOGIN_PAYLOAD = Record<string, any>;
@@ -98,7 +98,7 @@ export namespace API {
   /** POST /api/login/account */
   export type POST_API_LOGIN_ACCOUNT_QUERY = {
     /** example:  123 */
-    token: string;
+    // token: string;
   };
 
   export type POST_API_LOGIN_ACCOUNT_PAYLOAD = {

@@ -68,6 +68,13 @@ declare namespace API {
     type?: string;
   };
 
+  type QueryProcessingDetails = {
+    username?: string;
+    password?: string;
+    autoLogin?: boolean;
+    type?: string;
+  };
+
   type ErrorResponse = {
     /** 业务约定的错误码 */
     errorCode: string;
