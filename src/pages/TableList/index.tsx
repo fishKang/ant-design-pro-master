@@ -108,28 +108,100 @@ const TableList: React.FC = () => {
   const intl = useIntl();
 
   const columns: ProColumns<API.RuleListItem>[] = [
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.updateForm.beginDate.dateLabel"
+    //       defaultMessage="Begin date"
+    //     />
+    //   ),
+    //   dataIndex: 'name',
+    //   tip: 'The rule name is the unique key',
+    //   render: (dom, entity) => {
+    //     return (
+    //       <a
+    //         onClick={() => {
+    //           setCurrentRow(entity);
+    //           setShowDetail(true);
+    //         }}
+    //       >
+    //         {dom}
+    //       </a>
+    //     );
+    //   },
+    // },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.beginDate.dateLabel"
-          defaultMessage="Begin date"
-        />
-      ),
-      dataIndex: 'name',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      title: <FormattedMessage id="pages.searchTable.updateForm.serialNo.serialNoLabel" defaultMessage="Serial number" />,
+      dataIndex: 'serialNo',
+      valueType: 'text',
+      hideInSearch:true,
     },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.customer.customerLabel" defaultMessage="Customer" />,
+      dataIndex: 'customer',
+      valueType: 'text',
+      // ellipsis:true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.plan.planLabel" defaultMessage="Plan number" />,
+      dataIndex: 'plan',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.color.colorLabel" defaultMessage="Color number" />,
+      dataIndex: 'color',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.craft.craftLabel" defaultMessage="Craft" />,
+      dataIndex: 'craft',
+      valueType: 'text',
+      valueEnum: {
+        0: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.updateForm.craft.looseDyeingLabel"
+              defaultMessage="Loose dyeing"
+            />
+          ),
+        },
+        1: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.updateForm.craft.yarnDyeingLabel"
+              defaultMessage="Yarn dyeing" />
+          ),
+        },
+        2: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.updateForm.craft.shawlDyeingLabel"
+              defaultMessage="Shawl dyeing" />
+          ),
+        },
+      }
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.plannedVolume.plannedVolumeLabel" defaultMessage="Planned volume" />,
+      dataIndex: 'plannedVolume',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.netWeight.netWeightLabel" defaultMessage="Net weight" />,
+      dataIndex: 'netWeight',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.outboundDate.outboundDateLabel" defaultMessage="Outbound date" />,
+      dataIndex: 'outboundDate',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+
     {
       title: (
         <FormattedMessage
@@ -140,6 +212,7 @@ const TableList: React.FC = () => {
       sorter: true,
       dataIndex: 'begindate',
       valueType: 'date',
+      hideInTable:true,
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
         if (`${status}` === '0') {
@@ -169,6 +242,7 @@ const TableList: React.FC = () => {
       sorter: true,
       dataIndex: 'enddate',
       valueType: 'date',
+      hideInTable:true,
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
         if (`${status}` === '0') {
@@ -218,115 +292,140 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="Description" />,
-      dataIndex: 'desc',
-      valueType: 'textarea',
+      title: <FormattedMessage id="pages.searchTable.updateForm.createTime.timeLabel" defaultMessage="Create time" />,
+      dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch:true,
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleCallNo"
-          defaultMessage="Number of service calls"
-        />
-      ),
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
+      title: <FormattedMessage id="pages.searchTable.updateForm.settlement.settlementLabel" defaultMessage="Settlement" />,
+      dataIndex: 'settlement',
+      valueType: 'text',
+      hideInSearch:true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />,
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
-          ),
-          status: 'Default',
-        },
-        1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
-          ),
-          status: 'Processing',
-        },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
-          ),
-          status: 'Success',
-        },
-        3: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
-          ),
-          status: 'Error',
-        },
-      },
+      title: <FormattedMessage id="pages.searchTable.updateForm.price.priceLabel" defaultMessage="Price" />,
+      dataIndex: 'price',
+      valueType: 'text',
+      hideInSearch:true,
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleUpdatedAt"
-          defaultMessage="Last scheduled time"
-        />
-      ),
-      sorter: true,
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: 'Please enter the reason for the exception!',
-              })}
-            />
-          );
-        }
-        return defaultRender(item);
-      },
+      title: <FormattedMessage id="pages.searchTable.updateForm.amount.amountLabel" defaultMessage="Amount" />,
+      dataIndex: 'amount',
+      valueType: 'text',
+      hideInSearch:true,
     },
+    {
+      title: <FormattedMessage id="pages.searchTable.updateForm.remark.remarkLabel" defaultMessage="Remark" />,
+      dataIndex: 'remark',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleCallNo"
+    //       defaultMessage="Number of service calls"
+    //     />
+    //   ),
+    //   dataIndex: 'callNo',
+    //   sorter: true,
+    //   hideInForm: true,
+    //   renderText: (val: string) =>
+    //     `${val}${intl.formatMessage({
+    //       id: 'pages.searchTable.tenThousand',
+    //       defaultMessage: ' 万 ',
+    //     })}`,
+    // },
+    // {
+    //   title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />,
+    //   dataIndex: 'status',
+    //   hideInForm: true,
+    //   valueEnum: {
+    //     0: {
+    //       text: (
+    //         <FormattedMessage
+    //           id="pages.searchTable.nameStatus.default"
+    //           defaultMessage="Shut down"
+    //         />
+    //       ),
+    //       status: 'Default',
+    //     },
+    //     1: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
+    //       ),
+    //       status: 'Processing',
+    //     },
+    //     2: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
+    //       ),
+    //       status: 'Success',
+    //     },
+    //     3: {
+    //       text: (
+    //         <FormattedMessage
+    //           id="pages.searchTable.nameStatus.abnormal"
+    //           defaultMessage="Abnormal"
+    //         />
+    //       ),
+    //       status: 'Error',
+    //     },
+    //   },
+    // },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleUpdatedAt"
+    //       defaultMessage="Last scheduled time"
+    //     />
+    //   ),
+    //   sorter: true,
+    //   dataIndex: 'updatedAt',
+    //   valueType: 'dateTime',
+    //   renderFormItem: (item, { defaultRender, ...rest }, form) => {
+    //     const status = form.getFieldValue('status');
+    //     if (`${status}` === '0') {
+    //       return false;
+    //     }
+    //     if (`${status}` === '3') {
+    //       return (
+    //         <Input
+    //           {...rest}
+    //           placeholder={intl.formatMessage({
+    //             id: 'pages.searchTable.exception',
+    //             defaultMessage: 'Please enter the reason for the exception!',
+    //           })}
+    //         />
+    //       );
+    //     }
+    //     return defaultRender(item);
+    //   },
+    // },
 
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
-      ],
-    },
+    // {
+    //   title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+    //   dataIndex: 'option',
+    //   valueType: 'option',
+    //   render: (_, record) => [
+    //     <a
+    //       key="config"
+    //       onClick={() => {
+    //         handleUpdateModalOpen(true);
+    //         setCurrentRow(record);
+    //       }}
+    //     >
+    //       <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
+    //     </a>,
+    //     <a key="subscribeAlert" href="https://procomponents.ant.design/">
+    //       <FormattedMessage
+    //         id="pages.searchTable.subscribeAlert"
+    //         defaultMessage="Subscribe to alerts"
+    //       />
+    //     </a>,
+    //   ],
+    // },
   ];
 
   return (

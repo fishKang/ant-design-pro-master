@@ -77,7 +77,7 @@ const InfoCard: React.FC<{
         {desc}
       </div>
       <a href={href} target="_blank" rel="noreferrer">
-        了解更多 {'>'}
+        {/*了解更多 {'>'}*/}
       </a>
     </div>
   );
@@ -114,7 +114,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 Ant Design Pro
+            欢迎使用 染色系统
           </div>
           <p
             style={{
@@ -126,8 +126,8 @@ const Welcome: React.FC = () => {
               width: '65%',
             }}
           >
-            Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents
-            的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
+            {/*染色系统*/}
+            {/*基于加工明细生成统计报表*/}
           </p>
           <div
             style={{
@@ -138,21 +138,22 @@ const Welcome: React.FC = () => {
           >
             <InfoCard
               index={1}
-              href="https://umijs.org/docs/introduce/introduce"
-              title="了解 umi"
-              desc="umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。"
+              href="https://www.daibu.com"
+              title="散染成衣"
+              desc="在纺纱之前的纤维或散状纤维的染色，装入大的染缸，在适当的温度进行染色。色纺纱大多采用散纤维染色的方法（也有不同纤维单染的效果），常用于粗纺毛织物。"
+
             />
             <InfoCard
               index={2}
-              title="了解 ant design"
-              href="https://ant.design"
-              desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"
+              title="纱染成衣"
+              href="https://www.daibu.com"
+              desc="织造前对纱线进行染色，一般用于色织物、毛衫等或直接使用纱线（缝纫线等）。纱线染色是染织的基础。"
             />
             <InfoCard
               index={3}
-              title="了解 Pro Components"
-              href="https://procomponents.ant.design"
-              desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"
+              title="统计"
+              href="https://www.daibu.com"
+              desc="基于加工明细生成统计报表。"
             />
           </div>
         </div>
