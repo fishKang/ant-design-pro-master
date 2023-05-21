@@ -51,10 +51,16 @@ export async function rule(
     pageSize?: number;
     keyword?: string;
     data?:string;
+    type?:string;
+    customer?:string;
+    begindate?:string;
+    enddate?:string;
+    createdate?:string;
+
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/deingManageSystem/queryProcessingDetails', {
+  return request<API.RETINFO>('/api/deingManageSystem/queryProcessingDetails', {
     method: 'POST',
     // params: {
     //   ...params,
@@ -64,22 +70,22 @@ export async function rule(
     },
     data:{
       'dmscommon': {
-        'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
+        // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
+        'serialno': Math.floor(Math.random() * 100000000000000000000 + 1),
         "zoneno": "200",
         "service": "UserManage",
         "method": "userLogin",
         "logtype": "USERREGISTER",
         "department": "开发",
-        "workdate": "2023-05-14",
-        "worktime": "20:21:11"
+        "workdate": getNowDate(),
+        "worktime": new Date().toTimeString().substring(0,8)
       },
       "private": {
-        "begindate": "1990-05-12",
-        "enddate": "2023-05-12",
-        "type": "线",
-        "material": "羊绒",
-        "createdate": "2023-05-12",
-        "customer": "乔丹"
+        "begindate": params.begindate,
+        "enddate": params.enddate,
+        "type": params.type,
+        "createdate": params.createdate,
+        "customer": params.customer,
       }
     },
     ...(options || {}),
@@ -109,4 +115,19 @@ export async function removeRule(options?: { [key: string]: any }) {
     method: 'DELETE',
     ...(options || {}),
   });
+}
+function getNowDate(){
+  const date = new Date();
+  let month: string | number = date.getMonth() + 1;
+  let strDate: string | number = date.getDate();
+
+  if (month <= 9) {
+    month = "0" + month;
+  }
+
+  if (strDate <= 9) {
+    strDate = "0" + strDate;
+  }
+
+  return date.getFullYear() + "-" + month + "-" + strDate;
 }

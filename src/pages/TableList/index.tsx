@@ -7,7 +7,7 @@ import {
   PageContainer,
   ProDescriptions,
   ProFormText,
-  ProFormTextArea,
+  ProFormMoney,
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
@@ -21,7 +21,7 @@ import UpdateForm from './components/UpdateForm';
  * @zh-CN 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.RuleListItem) => {
+const handleAdd = async (fields: API.RETINFO) => {
   const hide = message.loading('正在添加');
   try {
     await addRule({ ...fields });
@@ -66,12 +66,12 @@ const handleUpdate = async (fields: FormValueType) => {
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (selectedRows: API.RETINFO[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map((row) => row.key),
+      key: selectedRows.map((row) => row.id),
     });
     hide();
     message.success('Deleted successfully and will refresh soon');
@@ -98,8 +98,8 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.RETINFO>();
+  const [selectedRowsState, setSelectedRows] = useState<API.RETINFO[]>([]);
 
   /**
    * @en-US International configuration
@@ -107,7 +107,7 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.RETINFO>[] = [
     // {
     //   title: (
     //     <FormattedMessage
@@ -132,7 +132,7 @@ const TableList: React.FC = () => {
     // },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.serialNo.serialNoLabel" defaultMessage="Serial number" />,
-      dataIndex: 'serialNo',
+      dataIndex: 'id',
       valueType: 'text',
       hideInSearch:true,
     },
@@ -150,16 +150,16 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.color.colorLabel" defaultMessage="Color number" />,
-      dataIndex: 'color',
+      dataIndex: 'colorcode',
       valueType: 'text',
       hideInSearch:true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.updateForm.craft.craftLabel" defaultMessage="Craft" />,
-      dataIndex: 'craft',
+      title: <FormattedMessage id="pages.searchTable.updateForm.type.typeLabel" defaultMessage="Craft" />,
+      dataIndex: 'type',
       valueType: 'text',
       valueEnum: {
-        0: {
+        '散染': {
           text: (
             <FormattedMessage
               id="pages.searchTable.updateForm.craft.looseDyeingLabel"
@@ -167,14 +167,14 @@ const TableList: React.FC = () => {
             />
           ),
         },
-        1: {
+        '纱染': {
           text: (
             <FormattedMessage
               id="pages.searchTable.updateForm.craft.yarnDyeingLabel"
               defaultMessage="Yarn dyeing" />
           ),
         },
-        2: {
+        '披染': {
           text: (
             <FormattedMessage
               id="pages.searchTable.updateForm.craft.shawlDyeingLabel"
@@ -184,20 +184,26 @@ const TableList: React.FC = () => {
       }
     },
     {
+      title: <FormattedMessage id="pages.searchTable.updateForm.craft.craftLabel" defaultMessage="Color number" />,
+      dataIndex: 'material',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.updateForm.plannedVolume.plannedVolumeLabel" defaultMessage="Planned volume" />,
-      dataIndex: 'plannedVolume',
+      dataIndex: 'plannedvolume',
       valueType: 'text',
       hideInSearch:true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.netWeight.netWeightLabel" defaultMessage="Net weight" />,
-      dataIndex: 'netWeight',
+      dataIndex: 'netweight',
       valueType: 'text',
       hideInSearch:true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.outboundDate.outboundDateLabel" defaultMessage="Outbound date" />,
-      dataIndex: 'outboundDate',
+      dataIndex: 'outbounddate',
       valueType: 'text',
       hideInSearch:true,
     },
@@ -293,13 +299,13 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.createTime.timeLabel" defaultMessage="Create time" />,
-      dataIndex: 'createTime',
+      dataIndex: 'createtime',
       valueType: 'text',
       hideInSearch:true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.updateForm.settlement.settlementLabel" defaultMessage="Settlement" />,
-      dataIndex: 'settlement',
+      dataIndex: 'settlementvolume',
       valueType: 'text',
       hideInSearch:true,
     },
@@ -427,16 +433,15 @@ const TableList: React.FC = () => {
     //   ],
     // },
   ];
-
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.RETINFO, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
@@ -453,6 +458,7 @@ const TableList: React.FC = () => {
         ]}
         request={rule}
         columns={columns}
+
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
@@ -472,7 +478,7 @@ const TableList: React.FC = () => {
                   id="pages.searchTable.totalServiceCalls"
                   defaultMessage="Total number of service calls"
                 />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
+                {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '}
                 <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
               </span>
             </div>
@@ -498,16 +504,17 @@ const TableList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
+
       <ModalForm
         title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
+          id: 'pages.searchTable.createForm.form.createProcessingdtl',
           defaultMessage: 'New rule',
         })}
-        width="400px"
+        width="500px"
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.RuleListItem);
+          const success = await handleAdd(value as API.RETINFO);
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {
@@ -516,22 +523,87 @@ const TableList: React.FC = () => {
           }
         }}
       >
+
         <ProFormText
           rules={[
             {
               required: true,
               message: (
                 <FormattedMessage
-                  id="pages.searchTable.ruleName"
+                  id="pages.searchTable.createForm.form.createProcessingdtl"
                   defaultMessage="Rule name is required"
                 />
               ),
             },
           ]}
-          width="md"
-          name="name"
+          width="sm"
+          name="customer"
+          addonBefore={'客户名称'}
         />
-        <ProFormTextArea width="md" name="desc" />
+        <ProFormText
+          width="sm"
+          name="plan"
+          addonBefore={'计划号'}
+
+        />
+        <ProFormText
+          width="sm"
+          name="colorcode"
+          addonBefore={'色号'}
+        />
+        <ProFormText
+          width="sm"
+          name="type"
+          addonBefore={'类型'}
+        />
+        <ProFormText
+          width="sm"
+          name="material"
+          addonBefore={'原料/规格'}
+        />
+        <ProFormText
+          width="sm"
+          name="plannedvolume"
+          addonBefore={'计划量'}
+        />
+        <ProFormText
+          width="sm"
+          name="netweight"
+          addonBefore={'净重'}
+        />
+        <ProFormText
+          width="sm"
+          name="outbounddate"
+          addonBefore={'出库日期'}
+        />
+        <ProFormText
+          width="sm"
+          name="settlementvolume"
+          addonBefore={'结算量'}
+        />
+        <ProFormText
+          width="sm"
+          name="price"
+          addonBefore={'单价'}
+        />
+        <ProFormMoney
+          width="sm"
+          name="amount"
+          addonBefore={'金额'}
+          initialValue={1}
+        />
+        <ProFormText
+          width="sm"
+          // grid='true'
+          name="type"
+          addonBefore={'类型'}
+
+        />
+        <ProFormText
+          width="sm"
+          name="remark"
+          addonBefore={'备注'}
+        />
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {
@@ -563,17 +635,17 @@ const TableList: React.FC = () => {
         }}
         closable={false}
       >
-        {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+        {currentRow?.id && (
+          <ProDescriptions<API.RETINFO>
             column={2}
-            title={currentRow?.name}
+            title={currentRow?.id}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.name,
+              id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns as ProDescriptionsItemProps<API.RETINFO>[]}
           />
         )}
       </Drawer>

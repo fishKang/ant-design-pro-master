@@ -49,6 +49,7 @@ declare namespace API {
     progress?: number;
   };
 
+
   type RuleList = {
     data?: RuleListItem[];
     /** 列表的内容总数 */
@@ -56,6 +57,41 @@ declare namespace API {
     success?: boolean;
   };
 
+
+  type RETINFO={
+    id?: number;
+    createtime?: string;
+    amount?: number;
+    settlementvolume?: number;
+    colorcode?: string;
+    createdate?: string;
+    remark?: string;
+    type?: string;
+    plannedvolume?: number;
+    material?: string;
+    price?: number;
+    netweight?: number;
+    outbounddate?: string;
+    pricetype?: number;
+    plan?: string;
+    customer?: string;
+    status?: number;
+  }
+
+  type Private={
+    RETINFO?: RETINFO[];
+    RETMSG?: string;
+    RETCODE?: string;
+  }
+
+  type RootObject={
+    RETINFO?: any;
+    RETMSG?: string;
+    RETCODE?: string;
+    current?: number;
+    /** 页面的容量 */
+    data?: Private;
+  }
   type FakeCaptcha = {
     code?: number;
     status?: string;
@@ -68,12 +104,6 @@ declare namespace API {
     type?: string;
   };
 
-  type QueryProcessingDetails = {
-    username?: string;
-    password?: string;
-    autoLogin?: boolean;
-    type?: string;
-  };
 
   type ErrorResponse = {
     /** 业务约定的错误码 */
