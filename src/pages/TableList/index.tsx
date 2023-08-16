@@ -7,14 +7,16 @@ import {
   PageContainer,
   ProDescriptions,
   ProFormText,
-  ProFormMoney,
   ProTable,
+  ProFormDependency,
+  ProFormDigit,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+// import { style } from '@umijs/bundler-esbuild/dist/plugins/style';
 
 /**
  * @en-US Add node
@@ -106,7 +108,6 @@ const TableList: React.FC = () => {
    * @zh-CN 国际化配置
    * */
   const intl = useIntl();
-
   const columns: ProColumns<API.RETINFO>[] = [
     // {
     //   title: (
@@ -437,7 +438,7 @@ const TableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.RETINFO, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
+          id: 'pages.searchTable.queryForm.form.queryProcessingdtl',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
@@ -510,6 +511,9 @@ const TableList: React.FC = () => {
           id: 'pages.searchTable.createForm.form.createProcessingdtl',
           defaultMessage: 'New rule',
         })}
+        layout="horizontal"
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 20 }}
         width="500px"
         open={createModalOpen}
         onOpenChange={handleModalOpen}
@@ -538,71 +542,98 @@ const TableList: React.FC = () => {
           ]}
           width="sm"
           name="customer"
-          addonBefore={'客户名称'}
+          label={'客户名称'}
+          // labelAlign={'left'}
+          // addonBefore={'客户名称'}
         />
         <ProFormText
           width="sm"
           name="plan"
-          addonBefore={'计划号'}
-
+          label={'计划号'}
+          colProps={{
+            span: 200,
+          }}
         />
         <ProFormText
           width="sm"
           name="colorcode"
-          addonBefore={'色号'}
+          label={'色号'}
         />
         <ProFormText
           width="sm"
           name="type"
-          addonBefore={'类型'}
+          label={'类型'}
         />
         <ProFormText
           width="sm"
           name="material"
-          addonBefore={'原料/规格'}
+          label={'原料/规格'}
         />
         <ProFormText
           width="sm"
           name="plannedvolume"
-          addonBefore={'计划量'}
+          label={'计划量'}
         />
         <ProFormText
           width="sm"
           name="netweight"
-          addonBefore={'净重'}
+          label={'净重'}
         />
         <ProFormText
           width="sm"
           name="outbounddate"
-          addonBefore={'出库日期'}
+          label={'出库日期'}
         />
-        <ProFormText
+        <ProFormDigit
           width="sm"
           name="settlementvolume"
-          addonBefore={'结算量'}
+          // name={['settlementvolume', 'number']}
+          label={'结算量'}
+          initialValue={'0'}
         />
-        <ProFormText
+        <ProFormDigit
           width="sm"
           name="price"
-          addonBefore={'单价'}
+          // name={['price', 'number']}
+          label={'单价'}
+          initialValue={'0'}
         />
-        <ProFormMoney
-          width="sm"
-          name="amount"
-          addonBefore={'金额'}
-          initialValue={1}
-        />
+        {/*<ProFormMoney*/}
+        {/*  width="sm"*/}
+        {/*  name="amount"*/}
+        {/*  label={'金额'}*/}
+        {/*  initialValue={1}*/}
+        {/*/>*/}
+
+        <ProFormDependency name={['settlementvolume', 'price']}>
+          {({ settlementvolume, price }) => {
+            return (
+              <ProFormDigit
+                label={'金额'}
+                width="sm"
+                // name="amount"
+                name={'amount'}
+                // disabled
+                // initialValue={'123'}
+                // label={`${settlementvolume?.value + price?.value || ''}`}
+                placeholder={`${(settlementvolume * price)} `}
+                // defaultValue = {`${(settlementvolume?.number * price?.number)} `}
+
+              />
+            );
+          }}
+        </ProFormDependency>
         <ProFormText
           width="sm"
           // grid='true'
           name="type"
-          addonBefore={'类型'}
+          label={'类型'}
 
         />
         <ProFormText
           width="sm"
           name="remark"
-          addonBefore={'备注'}
+          label={'备注'}
         />
       </ModalForm>
       <UpdateForm

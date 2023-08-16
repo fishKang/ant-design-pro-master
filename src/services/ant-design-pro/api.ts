@@ -1,7 +1,9 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
+import { nanoid } from 'nanoid';
 import { map } from '@umijs/utils/compiled/zod';
+import { getData } from '@umijs/bundler-webpack/compiled/schema-utils/ajv/dist/compile/validate';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
@@ -23,13 +25,26 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginDmsResult>('/api/deingManageSystem/userLogin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: body,
-    ...(options || {}),
+    data: {
+      "dmscommon": {
+        "serialno": nanoid(),
+        "zoneno": 200,
+        "service": "UserManage",
+        "method": "userLogin",
+        "logtype": "USERREGISTER",
+        "department": "开发",
+        "workdate": getNowDate(),
+        "worktime": new Date().toTimeString().substring(0,8)
+      },
+      "private": {
+        ...(body || {}),
+      }
+    },
   });
 }
 
@@ -71,7 +86,7 @@ export async function rule(
     data:{
       'dmscommon': {
         // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
-        'serialno': Math.floor(Math.random() * 100000000000000000000 + 1),
+        'serialno': nanoid(),
         "zoneno": "200",
         "service": "UserManage",
         "method": "userLogin",
@@ -103,9 +118,28 @@ export async function updateRule(options?: { [key: string]: any }) {
 
 /** 新建规则 POST /api/rule */
 export async function addRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/rule', {
+  return request<API.RuleListItem>('/api/deingManageSystem/addProcessingDetails', {
     method: 'POST',
-    ...(options || {}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data:{
+      'dmscommon': {
+        // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
+        'serialno': nanoid(),
+        "zoneno": "200",
+        "service": "UserManage",
+        "method": "userLogin",
+        "logtype": "USERREGISTER",
+        "department": "开发",
+        "workdate": getNowDate(),
+        "worktime": new Date().toTimeString().substring(0,8)
+      },
+      "private": {
+        ...(options || {})
+      },
+    },
+    // ...(options || {}),
   });
 }
 

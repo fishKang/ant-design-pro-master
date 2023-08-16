@@ -29,6 +29,12 @@ declare namespace API {
     currentAuthority?: string;
   };
 
+  type LoginDmsResult = {
+    success?: boolean;
+    type?: string;
+    currentAuthority?: string;
+  };
+
   type PageParams = {
     current?: number;
     pageSize?: number;
@@ -98,7 +104,7 @@ declare namespace API {
   };
 
   type LoginParams = {
-    username?: string;
+    name?: string;
     password?: string;
     autoLogin?: boolean;
     type?: string;
