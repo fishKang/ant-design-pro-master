@@ -34,9 +34,8 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
       "dmscommon": {
         "serialno": nanoid(),
         "zoneno": 200,
-        "service": "UserManage",
+        "service": "IDmsServiceARS",
         "method": "userLogin",
-        "logtype": "USERREGISTER",
         "department": "开发",
         "workdate": getNowDate(),
         "worktime": new Date().toTimeString().substring(0,8)
@@ -88,9 +87,8 @@ export async function rule(
         // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
         'serialno': nanoid(),
         "zoneno": "200",
-        "service": "UserManage",
-        "method": "userLogin",
-        "logtype": "USERREGISTER",
+        "service": "IDmsProcessingDetailsARS",
+        "method": "queryProcessingDetails",
         "department": "开发",
         "workdate": getNowDate(),
         "worktime": new Date().toTimeString().substring(0,8)
@@ -128,9 +126,8 @@ export async function addRule(options?: { [key: string]: any }) {
         // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
         'serialno': nanoid(),
         "zoneno": "200",
-        "service": "UserManage",
-        "method": "userLogin",
-        "logtype": "USERREGISTER",
+        "service": "IDmsProcessingDetailsARS",
+        "method": "addProcessingDetails",
         "department": "开发",
         "workdate": getNowDate(),
         "worktime": new Date().toTimeString().substring(0,8)
@@ -145,9 +142,26 @@ export async function addRule(options?: { [key: string]: any }) {
 
 /** 删除规则 DELETE /api/rule */
 export async function removeRule(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/rule', {
-    method: 'DELETE',
-    ...(options || {}),
+  return request<Record<string, any>>('/api/deingManageSystem/deleteProcessingDetails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data:{
+      'dmscommon': {
+        // 'serialno': 'f624097c-3a02-4c87-9b0a-afbf3268c897',
+        'serialno': nanoid(),
+        "zoneno": "200",
+        "service": "IDmsProcessingDetailsARS",
+        "method": "deleteProcessingDetails",
+        "department": "开发",
+        "workdate": getNowDate(),
+        "worktime": new Date().toTimeString().substring(0,8)
+      },
+      "private": {
+        ...(options || {})
+      },
+    },
   });
 }
 function getNowDate(){

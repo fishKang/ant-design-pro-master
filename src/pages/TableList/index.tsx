@@ -73,7 +73,7 @@ const handleRemove = async (selectedRows: API.RETINFO[]) => {
   if (!selectedRows) return true;
   try {
     await removeRule({
-      key: selectedRows.map((row) => row.id),
+      deletelistid: selectedRows.map((row) => row.id),
     });
     hide();
     message.success('Deleted successfully and will refresh soon');
